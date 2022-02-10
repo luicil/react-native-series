@@ -14,13 +14,15 @@ function App(){
           component={LoginScreen}
           options={{
             title: "Series",
-            headerTintColor: "#fff",
+            headerTintColor: "white",
             headerStyle:{
-              backgroundColor: "#10002b",
+              backgroundColor: "#6ca2f7",
+              borderBottomWidth: 1,
+              borderBottomColor: "#c5c5c5",
             },
             headerTitleStyle:{
-              color: "#fff",
-              fontSize: 23,
+              color: "white",
+              fontSize: 30,
             },
           }}
         />
