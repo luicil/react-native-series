@@ -23,13 +23,13 @@ export default class LoginScreen extends React.Component{
     }
 
     tryLogin(){
-        
+
     }
 
     render(){
         return(
-            <view>
-                <FormRow>
+            <View style={styles.container}>
+                <FormRow first={true}>
                     <TextInput
                         style={styles.input}
                         placeholder="user@mail.com"
@@ -37,7 +37,7 @@ export default class LoginScreen extends React.Component{
                         onChangeText={value => this.onChangeHandler("mail", value)}
                     />
                 </FormRow>
-                <FormRow>
+                <FormRow last>
                     <TextInput 
                         style={styles.input}
                         placeholder="*****"
@@ -50,9 +50,8 @@ export default class LoginScreen extends React.Component{
                 <Button
                     title="Entrar"
                     onPress={() => this.tryLogin()}
-
                 />
-            </view>
+            </View>
         )
     }
 }
@@ -62,5 +61,10 @@ const styles = StyleSheet.create({
         paddingLeft: 5,
         paddingRight: 5,
         paddingBottom: 10,
-    }
+    },
+    container: {
+        paddingLeft: 10,
+        paddingRight: 10,
+    },
+
 })
