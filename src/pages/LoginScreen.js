@@ -3,7 +3,9 @@ import{View, TextInput, StyleSheet, Button} from "react-native";
 
 import FormRow from "../components/FormRow";
 
-import { initializeApp } from "firebase/app";
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
+import 'firebase/compat/firestore';
 
 export default class LoginScreen extends React.Component{
     
@@ -16,7 +18,7 @@ export default class LoginScreen extends React.Component{
     }
 
     componentDidMount(){
-        const firebaseConfig = {
+        const config = {
             apiKey: "AIzaSyDhgktvJuZ3pcBtFqVWUVuBM_nKhULTCQ4",
             authDomain: "series-5cf5c.firebaseapp.com",
             projectId: "series-5cf5c",
@@ -24,7 +26,16 @@ export default class LoginScreen extends React.Component{
             messagingSenderId: "755133384026",
             appId: "1:755133384026:web:6e06666cd36691b1d09f63"
           };        
-          const app = initializeApp(firebaseConfig);
+          firebase.initializeApp(config);
+
+          firebase.auth()
+          .signInWithEmailAndPassword("teste@teste.com","123123")
+          .then(user =>{
+            console.log("autenticou ", user);
+          })
+          .catch(error =>{
+              console.log("usuário náo encontrado ", error);
+          })
     }
 
     onChangeHandler(field, value){
