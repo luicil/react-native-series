@@ -3,7 +3,7 @@ import{View, TextInput, StyleSheet, Button} from "react-native";
 
 import FormRow from "../components/FormRow";
 
-import firebase from "firebase";
+import { initializeApp } from "firebase/app";
 
 export default class LoginScreen extends React.Component{
     
