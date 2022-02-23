@@ -3,6 +3,8 @@ import{View, TextInput, StyleSheet, Button} from "react-native";
 
 import FormRow from "../components/FormRow";
 
+import firebase from "firebase";
+
 export default class LoginScreen extends React.Component{
     
     constructor(props){
@@ -11,6 +13,18 @@ export default class LoginScreen extends React.Component{
             mail: "",
             password: "",
         }
+    }
+
+    componentDidMount(){
+        const firebaseConfig = {
+            apiKey: "AIzaSyDhgktvJuZ3pcBtFqVWUVuBM_nKhULTCQ4",
+            authDomain: "series-5cf5c.firebaseapp.com",
+            projectId: "series-5cf5c",
+            storageBucket: "series-5cf5c.appspot.com",
+            messagingSenderId: "755133384026",
+            appId: "1:755133384026:web:6e06666cd36691b1d09f63"
+          };        
+          const app = initializeApp(firebaseConfig);
     }
 
     onChangeHandler(field, value){
