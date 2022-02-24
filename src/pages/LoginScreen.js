@@ -1,5 +1,11 @@
 import React from "react";
-import{View, TextInput, StyleSheet, Button} from "react-native";
+import{
+        View, 
+        TextInput, 
+        StyleSheet, 
+        Button, 
+        ActivityIndicator
+    } from "react-native";
 
 import FormRow from "../components/FormRow";
 
@@ -14,6 +20,7 @@ export default class LoginScreen extends React.Component{
         this.state ={
             mail: "",
             password: "",
+            isLoading: false,
         }
     }
 
@@ -28,14 +35,6 @@ export default class LoginScreen extends React.Component{
           };        
           firebase.initializeApp(config);
 
-          firebase.auth()
-          .signInWithEmailAndPassword("teste@teste.com","123123")
-          .then(user =>{
-            console.log("autenticou ", user);
-          })
-          .catch(error =>{
-              console.log("usuário náo encontrado ", error);
-          })
     }
 
     onChangeHandler(field, value){
@@ -48,7 +47,33 @@ export default class LoginScreen extends React.Component{
     }
 
     tryLogin(){
+        
+        this.setState({ isLoading: true });
 
+        const{mail, password} = this.state;
+
+        firebase.auth()
+        .signInWithEmailAndPassword(mail,password)
+        .then(user =>{
+            console.log("autenticou ", user);
+        })
+        .catch(error =>{
+            console.log("usuário náo encontrado ", error);
+        })
+        .then(()=> this.setState({ isLoading: false }));
+    }
+
+    renderButton(){
+        if(this.state.isLoading) {
+            return <ActivityIndicator />
+        } else {
+            return(
+                <Button
+                    title="Entrar"
+                    onPress={() => this.tryLogin()}
+                />    
+            );    
+        }
     }
 
     render(){
@@ -72,10 +97,10 @@ export default class LoginScreen extends React.Component{
                         onChangeText={value => this.onChangeHandler("password", value)}
                     />
                 </FormRow>
-                <Button
-                    title="Entrar"
-                    onPress={() => this.tryLogin()}
-                />
+
+                { this.renderButton() }
+
+        
             </View>
         )
     }
