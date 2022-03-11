@@ -90,7 +90,7 @@ export default class LoginScreen extends React.Component{
                 <FormRow last>
                     <TextInput 
                         style={styles.input}
-                        placeholder="*****"
+                        placeholder="**zz"
                         //secureTextEntry={true}
                         secureTextEntry
                         value={this.state.password}
