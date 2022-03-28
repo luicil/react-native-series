@@ -2,9 +2,11 @@ import React from "react";
 import{
         View, 
         TextInput, 
+        Text,
         StyleSheet, 
         Button, 
-        ActivityIndicator
+        ActivityIndicator,
+        Alert
     } from "react-native";
 
 import FormRow from "../components/FormRow";
@@ -48,19 +50,50 @@ export default class LoginScreen extends React.Component{
 
     tryLogin(){
         
-        this.setState({ isLoading: true });
+        this.setState({ isLoading: true, message: "" });
 
         const{mail, password} = this.state;
 
         firebase.auth()
         .signInWithEmailAndPassword(mail,password)
         .then(user =>{
-            console.log("autenticou ", user);
+            this.setState({message: "Sucesso !"});
+            //console.log("autenticou ", user);
         })
         .catch(error =>{
-            console.log("usuário náo encontrado ", error);
+            this.setState({
+                message: this.getMessageByErrorCode(error.code)
+            });
+            //console.log("usuário náo encontrado ", error);
         })
         .then(()=> this.setState({ isLoading: false }));
+    }
+
+    getMessageByErrorCode(errorCode){
+        switch (errorCode){
+            case "auth/invalid-email":
+                return "email inválido";
+            case "auth/wrong-password":
+                return "senha incorreta";
+            case "auth/user-not-found":
+                return "usuário não encontrado"
+            default:
+                return "erro indefinido";
+        }
+    }
+
+    renderMessage(){
+        const {message} = this.state;
+        if(!message){
+            return null;
+        } else {
+            return(
+                <View>
+                    <Text>{message}</Text>
+                </View>
+            )
+
+        }
     }
 
     renderButton(){
@@ -90,7 +123,7 @@ export default class LoginScreen extends React.Component{
                 <FormRow last>
                     <TextInput 
                         style={styles.input}
-                        placeholder="**zz"
+                        placeholder="***"
                         //secureTextEntry={true}
                         secureTextEntry
                         value={this.state.password}
@@ -99,8 +132,8 @@ export default class LoginScreen extends React.Component{
                 </FormRow>
 
                 { this.renderButton() }
+                { this.renderMessage() }
 
-        
             </View>
         )
     }
