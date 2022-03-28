@@ -6,7 +6,7 @@ import{
         StyleSheet, 
         Button, 
         ActivityIndicator,
-        Alert
+        Alert,
     } from "react-native";
 
 import FormRow from "../components/FormRow";
@@ -54,17 +54,44 @@ export default class LoginScreen extends React.Component{
 
         const{mail, password} = this.state;
 
-        firebase.auth()
-        .signInWithEmailAndPassword(mail,password)
-        .then(user =>{
+        const loginUserSucess = user =>{
             this.setState({message: "Sucesso !"});
-            //console.log("autenticou ", user);
-        })
-        .catch(error =>{
+        };
+
+        const loginUserFailed = error =>{
             this.setState({
                 message: this.getMessageByErrorCode(error.code)
-            });
-            //console.log("usuário náo encontrado ", error);
+            });                                
+        };
+
+        firebase.auth()
+        .signInWithEmailAndPassword(mail,password)
+        .then(loginUserSucess)
+        .catch(error =>{
+            if(error.code === "auth/user-not-found"){
+                Alert.alert(
+                    "Usuário não encontrado",
+                    "Deseja cadastrar o usuário ?",
+                    [{
+                        text: "Não",
+                        onPress: ()=>{},
+                        style: "cancel"
+                    },
+                    {
+                        text: "Sim",
+                        onPress: ()=>{
+                            firebase
+                                .auth()
+                                .createUserWithEmailAndPassword(mail, password)
+                                .then(loginUserSucess)
+                                .catch(loginUserFailed)
+                        }
+                    }],
+                    { cancelable: false }
+                )    
+            } else {
+                loginUserFailed(error);
+            }
         })
         .then(()=> this.setState({ isLoading: false }));
     }
